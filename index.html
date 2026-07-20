@@ -7,6 +7,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bwip-js@4.5.1/dist/bwip-js-min.js"></script>
 
+
 <style>
 
 *{
@@ -23,6 +24,7 @@ padding:30px;
 }
 
 
+
 .panel{
 
 background:white;
@@ -34,6 +36,7 @@ box-shadow:0 5px 20px #aaa;
 }
 
 
+
 h1{
 
 color:#0057a8;
@@ -41,10 +44,13 @@ color:#0057a8;
 }
 
 
+
 input,select{
 
 width:360px;
+
 padding:12px;
+
 margin:7px 0;
 
 font-size:16px;
@@ -54,6 +60,7 @@ border-radius:8px;
 border:1px solid #aaa;
 
 }
+
 
 
 button{
@@ -72,7 +79,10 @@ font-size:16px;
 
 margin:8px 4px;
 
+cursor:pointer;
+
 }
+
 
 
 .clear{
@@ -83,13 +93,14 @@ background:#777;
 
 
 
+/* BOARDING PASS */
 
 
 .ticket{
 
 width:900px;
 
-min-height:420px;
+height:420px;
 
 display:flex;
 
@@ -104,6 +115,7 @@ box-shadow:0 10px 30px #888;
 }
 
 
+
 .main{
 
 width:650px;
@@ -115,6 +127,7 @@ background:linear-gradient(135deg,#0057a8,#00a8e8);
 color:white;
 
 }
+
 
 
 .stub{
@@ -131,11 +144,12 @@ align-items:center;
 
 justify-content:center;
 
-padding:20px;
-
 background:white;
 
+padding:20px;
+
 }
+
 
 
 .airline{
@@ -147,7 +161,12 @@ font-weight:bold;
 }
 
 
+
 .class{
+
+display:inline-block;
+
+margin-top:10px;
 
 background:white;
 
@@ -157,11 +176,8 @@ padding:7px 18px;
 
 border-radius:20px;
 
-display:inline-block;
-
-margin-top:10px;
-
 }
+
 
 
 .passenger{
@@ -175,6 +191,7 @@ margin-top:20px;
 }
 
 
+
 .route{
 
 font-size:40px;
@@ -184,6 +201,7 @@ font-weight:bold;
 margin:20px 0;
 
 }
+
 
 
 .info{
@@ -197,6 +215,7 @@ gap:25px;
 }
 
 
+
 .label{
 
 font-size:12px;
@@ -204,6 +223,7 @@ font-size:12px;
 opacity:.8;
 
 }
+
 
 
 .value{
@@ -215,11 +235,13 @@ font-weight:bold;
 }
 
 
+
 .confirm{
 
 margin-top:25px;
 
 }
+
 
 
 #datamatrix{
@@ -232,55 +254,76 @@ height:150px;
 
 
 
+/* PRINT EXACT PREVIEW */
+
+
 @media print{
 
 
 *{
 
 -webkit-print-color-adjust:exact !important;
+
 print-color-adjust:exact !important;
 
 }
 
 
-body{
 
-background:white;
-padding:0;
+html,body{
+
 margin:0;
 
-}
+padding:0;
 
-
-.panel{
-
-display:none;
+background:white;
 
 }
+
+
+
+.panel,
+button{
+
+display:none !important;
+
+}
+
 
 
 #output{
 
-display:block;
+display:block !important;
 
 margin:0;
+
 padding:0;
 
 }
+
 
 
 .ticket{
 
 width:900px !important;
 
-min-height:420px !important;
+height:420px !important;
+
+display:flex !important;
 
 box-shadow:none !important;
+
+border-radius:22px !important;
+
+overflow:hidden !important;
 
 }
 
 
+
 .main{
+
+width:650px !important;
 
 background:linear-gradient(135deg,#0057a8,#00a8e8) !important;
 
@@ -289,19 +332,25 @@ color:white !important;
 }
 
 
+
 .stub{
+
+width:250px !important;
 
 background:white !important;
 
 }
 
 
+
 @page{
 
 size:auto;
-margin:10mm;
+
+margin:0;
 
 }
+
 
 
 }
@@ -310,6 +359,7 @@ margin:10mm;
 </style>
 
 </head>
+
 
 
 <body>
@@ -359,9 +409,11 @@ margin:10mm;
 </select>
 
 
+
 <label>Flight Date</label>
 
 <input id="date" type="date">
+
 
 
 <label>Boarding Time</label>
@@ -369,9 +421,11 @@ margin:10mm;
 <input id="boarding" type="time">
 
 
+
 <label>Estimated Lift-Off Time</label>
 
 <input id="liftoff" type="time">
+
 
 
 <input id="terminal" placeholder="Terminal">
@@ -381,22 +435,30 @@ margin:10mm;
 <input id="seat" placeholder="Seat">
 
 
+
 <button onclick="createTicket()">
+
 Check In
+
 </button>
 
 
 <button onclick="window.print()">
+
 Print
+
 </button>
 
 
 <button class="clear" onclick="location.href=location.pathname">
+
 Clear
+
 </button>
 
 
 </div>
+
 
 
 <br>
@@ -463,11 +525,10 @@ let liftText=formatTime(liftoff.value);
 
 
 /*
-DATA MATRIX CONTENT
-
-Readable by iPhone scanner apps
-
+ SAME DATA MATRIX FORMAT
+ DO NOT CHANGE
 */
+
 
 let matrixData =
 
@@ -525,17 +586,15 @@ ${passengerName.value}
 
 <div class="route">
 
-${from.value}
-
-→
-
-${to.value}
+${from.value} → ${to.value}
 
 </div>
 
 
 
+
 <div class="info">
+
 
 
 <div>
@@ -549,6 +608,7 @@ ${flight.value}
 </div>
 
 </div>
+
 
 
 
@@ -566,6 +626,7 @@ ${dateText}
 
 
 
+
 <div>
 
 <div class="label">
@@ -577,6 +638,7 @@ ${boardingText}
 </div>
 
 </div>
+
 
 
 
@@ -594,6 +656,7 @@ ${liftText}
 
 
 
+
 <div>
 
 <div class="label">
@@ -605,6 +668,7 @@ ${terminal.value}
 </div>
 
 </div>
+
 
 
 
@@ -622,6 +686,7 @@ ${gate.value}
 
 
 
+
 <div>
 
 <div class="label">
@@ -635,6 +700,7 @@ ${seat.value}
 </div>
 
 
+
 </div>
 
 
@@ -644,9 +710,7 @@ ${seat.value}
 
 Confirmation:
 
-<b>
-${confirmation}
-</b>
+<b>${confirmation}</b>
 
 <br><br>
 
@@ -659,6 +723,7 @@ ${passport.value}
 
 
 </div>
+
 
 
 
@@ -700,12 +765,12 @@ ${flight.value}
 ${seat.value}
 
 
-</div>
-
-
 
 </div>
 
+
+
+</div>
 
 `;
 
@@ -741,5 +806,4 @@ includetext:false
 
 
 </body>
-
 </html>
