@@ -9,55 +9,96 @@
 
 <style>
 
+*{
+box-sizing:border-box;
+}
+
+
 body{
+
 font-family:-apple-system,BlinkMacSystemFont,Arial;
 background:#eaf5ff;
 padding:30px;
+
 }
 
+
 .panel{
+
 background:white;
 width:430px;
 padding:25px;
 border-radius:20px;
 box-shadow:0 5px 20px #aaa;
+
 }
 
+
+h1{
+
+color:#0057a8;
+
+}
+
+
 input,select{
+
 width:360px;
 padding:12px;
 margin:7px 0;
+
 font-size:16px;
+
 border-radius:8px;
+
 border:1px solid #aaa;
-box-sizing:border-box;
+
 }
+
 
 button{
+
 padding:12px 20px;
+
 border:0;
+
 border-radius:10px;
+
 background:#0067b1;
+
 color:white;
+
 font-size:16px;
+
 margin:8px 4px;
+
 }
+
 
 .clear{
+
 background:#777;
+
 }
 
 
-/* TICKET */
+
+
 
 .ticket{
 
 width:900px;
+
 min-height:420px;
+
 display:flex;
+
 background:white;
+
 border-radius:22px;
+
 overflow:hidden;
+
 box-shadow:0 10px 30px #888;
 
 }
@@ -66,40 +107,58 @@ box-shadow:0 10px 30px #888;
 .main{
 
 width:650px;
+
 padding:30px;
+
 background:linear-gradient(135deg,#0057a8,#00a8e8);
+
 color:white;
 
 }
 
 
-
 .stub{
 
 width:250px;
+
 border-left:3px dashed #aaa;
+
 display:flex;
+
 flex-direction:column;
+
 align-items:center;
+
 justify-content:center;
+
 padding:20px;
+
+background:white;
 
 }
 
 
 .airline{
+
 font-size:32px;
+
 font-weight:bold;
+
 }
 
 
 .class{
 
 background:white;
+
 color:#0057a8;
+
 padding:7px 18px;
+
 border-radius:20px;
+
 display:inline-block;
+
 margin-top:10px;
 
 }
@@ -108,7 +167,9 @@ margin-top:10px;
 .passenger{
 
 font-size:30px;
+
 font-weight:bold;
+
 margin-top:20px;
 
 }
@@ -117,7 +178,9 @@ margin-top:20px;
 .route{
 
 font-size:40px;
+
 font-weight:bold;
+
 margin:20px 0;
 
 }
@@ -126,7 +189,9 @@ margin:20px 0;
 .info{
 
 display:flex;
+
 flex-wrap:wrap;
+
 gap:25px;
 
 }
@@ -135,6 +200,7 @@ gap:25px;
 .label{
 
 font-size:12px;
+
 opacity:.8;
 
 }
@@ -143,6 +209,7 @@ opacity:.8;
 .value{
 
 font-size:18px;
+
 font-weight:bold;
 
 }
@@ -158,27 +225,87 @@ margin-top:25px;
 #datamatrix{
 
 width:150px;
+
 height:150px;
 
 }
 
 
+
 @media print{
 
-.panel,button{
-display:none;
+
+*{
+
+-webkit-print-color-adjust:exact !important;
+print-color-adjust:exact !important;
+
 }
+
 
 body{
+
 background:white;
 padding:0;
+margin:0;
+
 }
+
+
+.panel{
+
+display:none;
+
+}
+
+
+#output{
+
+display:block;
+
+margin:0;
+padding:0;
+
+}
+
 
 .ticket{
-box-shadow:none;
-}
+
+width:900px !important;
+
+min-height:420px !important;
+
+box-shadow:none !important;
 
 }
+
+
+.main{
+
+background:linear-gradient(135deg,#0057a8,#00a8e8) !important;
+
+color:white !important;
+
+}
+
+
+.stub{
+
+background:white !important;
+
+}
+
+
+@page{
+
+size:auto;
+margin:10mm;
+
+}
+
+
+}
+
 
 </style>
 
@@ -190,10 +317,12 @@ box-shadow:none;
 
 <div class="panel">
 
+
 <h1>Airport Check-In</h1>
 
 
 <h3>Flight Information</h3>
+
 
 <input id="airline" placeholder="Airline Name">
 
@@ -204,11 +333,14 @@ box-shadow:none;
 <input id="to" placeholder="Arrival Airport">
 
 
+
 <h3>Passenger Information</h3>
 
-<input id="Passengername" placeholder="Passenger Full Name">
 
-<input id="passport" placeholder="Passport / ID">
+<input id="passengerName" placeholder="Passenger Full Name">
+
+<input id="passport" placeholder="Passport / ID Number">
+
 
 
 <h3>Travel Details</h3>
@@ -217,8 +349,11 @@ box-shadow:none;
 <select id="classType">
 
 <option>Economy Class</option>
+
 <option>Premium Economy</option>
+
 <option>Business Class</option>
+
 <option>First Class</option>
 
 </select>
@@ -234,7 +369,7 @@ box-shadow:none;
 <input id="boarding" type="time">
 
 
-<label>Estimated Lift-Off</label>
+<label>Estimated Lift-Off Time</label>
 
 <input id="liftoff" type="time">
 
@@ -268,9 +403,6 @@ Clear
 
 
 <div id="output"></div>
-
-
-
 <script>
 
 
@@ -285,13 +417,16 @@ weekday:"short",
 month:"short",
 day:"numeric",
 year:"numeric"
-});
+}
+);
 
 }
 
 
 
 function formatTime(v){
+
+if(!v) return "";
 
 let d=new Date("2000-01-01T"+v);
 
@@ -300,10 +435,10 @@ return d.toLocaleTimeString(
 {
 hour:"numeric",
 minute:"2-digit"
-});
+}
+);
 
 }
-
 
 
 
@@ -329,16 +464,19 @@ let liftText=formatTime(liftoff.value);
 
 /*
 DATA MATRIX CONTENT
-Compact ticket data
+
+Readable by iPhone scanner apps
+
 */
 
 let matrixData =
+
 `BP
 CONF:${confirmation}
 FLIGHT:${flight.value}
 FROM:${from.value}
 TO:${to.value}
-PASSENGER:${Passengername.value}
+PASSENGER:${passengerName.value}
 DATE:${date.value}
 BOARDING:${boarding.value}
 LIFTOFF:${liftoff.value}
@@ -346,6 +484,8 @@ TERMINAL:${terminal.value}
 GATE:${gate.value}
 SEAT:${seat.value}
 CLASS:${classType.value}`;
+
+
 
 
 
@@ -360,22 +500,37 @@ output.innerHTML=
 
 
 <div class="airline">
+
 ${airline.value}
+
 </div>
+
 
 
 <div class="class">
+
 ${classType.value}
+
 </div>
+
 
 
 <div class="passenger">
-${Passengername.value}
+
+${passengerName.value}
+
 </div>
 
 
+
 <div class="route">
-${from.value} → ${to.value}
+
+${from.value}
+
+→
+
+${to.value}
+
 </div>
 
 
@@ -384,80 +539,149 @@ ${from.value} → ${to.value}
 
 
 <div>
-<div class="label">FLIGHT</div>
-<div class="value">${flight.value}</div>
+
+<div class="label">
+FLIGHT
 </div>
+
+<div class="value">
+${flight.value}
+</div>
+
+</div>
+
 
 
 <div>
-<div class="label">DATE</div>
-<div class="value">${dateText}</div>
+
+<div class="label">
+DATE
 </div>
+
+<div class="value">
+${dateText}
+</div>
+
+</div>
+
 
 
 <div>
-<div class="label">BOARDING</div>
-<div class="value">${boardingText}</div>
+
+<div class="label">
+BOARDING
 </div>
+
+<div class="value">
+${boardingText}
+</div>
+
+</div>
+
 
 
 <div>
-<div class="label">LIFT-OFF</div>
-<div class="value">${liftText}</div>
+
+<div class="label">
+LIFT-OFF
 </div>
+
+<div class="value">
+${liftText}
+</div>
+
+</div>
+
 
 
 <div>
-<div class="label">TERMINAL</div>
-<div class="value">${terminal.value}</div>
+
+<div class="label">
+TERMINAL
 </div>
+
+<div class="value">
+${terminal.value}
+</div>
+
+</div>
+
 
 
 <div>
-<div class="label">GATE</div>
-<div class="value">${gate.value}</div>
+
+<div class="label">
+GATE
 </div>
+
+<div class="value">
+${gate.value}
+</div>
+
+</div>
+
 
 
 <div>
-<div class="label">SEAT</div>
-<div class="value">${seat.value}</div>
+
+<div class="label">
+SEAT
+</div>
+
+<div class="value">
+${seat.value}
+</div>
+
 </div>
 
 
 </div>
+
+
 
 
 <div class="confirm">
 
 Confirmation:
-<b>${confirmation}</b>
 
-<br>
+<b>
+${confirmation}
+</b>
+
+<br><br>
 
 Passport:
+
 ${passport.value}
 
 </div>
 
 
+
 </div>
+
+
 
 
 
 <div class="stub">
 
 
-<b>BOARDING PASS</b>
+<b>
+BOARDING PASS
+</b>
 
-<br>
+
+<br><br>
 
 
 CONFIRMATION
 
 <br>
 
-<b>${confirmation}</b>
+<b>
+${confirmation}
+</b>
 
 
 <br><br>
@@ -467,6 +691,7 @@ CONFIRMATION
 
 
 <br>
+
 
 ${flight.value}
 
@@ -478,28 +703,43 @@ ${seat.value}
 </div>
 
 
+
 </div>
+
 
 `;
 
 
 
+
+
 bwipjs.toCanvas(
+
 "datamatrix",
+
 {
+
 bcid:"datamatrix",
+
 text:matrixData,
+
 scale:4,
+
 includetext:false
+
 }
+
 );
 
 
+
 }
+
 
 
 </script>
 
 
 </body>
+
 </html>
