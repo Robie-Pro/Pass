@@ -7,7 +7,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bwip-js@4.5.1/dist/bwip-js-min.js"></script>
 
-
 <style>
 
 *{
@@ -473,6 +472,8 @@ Clear
 <div id="output"></div>
 <script>
 
+let confirmation = "";
+
 
 function formatDate(v){
 
@@ -542,12 +543,7 @@ alert("Copied in office chart order");
 function createTicket(){
 
 
-let confirmation =
-
-Math.random()
-.toString(36)
-.substring(2,8)
-.toUpperCase();
+confirmation = Math.random().toString(36).substring(2,8).toUpperCase();
 
 
 
