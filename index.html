@@ -509,11 +509,9 @@ minute:"2-digit"
 
 }
 
-function copyRawTSV(){
+function copyRawTSV() {
 
-let data =
-
-[
+const data = [
 confirmation,
 airline.value,
 flight.value,
@@ -528,17 +526,16 @@ terminal.value,
 gate.value,
 seat.value,
 classType.value
-
 ].join("\t");
 
-
-navigator.clipboard.writeText(data);
-
-alert("Copied in office chart order");
+navigator.clipboard.writeText(data)
+.then(() => alert("Copied!"))
+.catch(err => {
+    console.error(err);
+    alert("Copy failed.");
+});
 
 }
-
-
 
 function createTicket(){
 
