@@ -449,6 +449,12 @@ Print
 
 </button>
 
+<button onclick="copyRawTSV()">
+
+Copy Data
+
+</button>
+
 
 <button class="clear" onclick="location.href=location.pathname">
 
@@ -499,6 +505,35 @@ hour:"numeric",
 minute:"2-digit"
 }
 );
+
+}
+
+function copyRawTSV(){
+
+let data =
+
+[
+confirmation,
+airline.value,
+flight.value,
+passengerName.value,
+passport.value,
+from.value,
+to.value,
+date.value,
+boarding.value,
+liftoff.value,
+terminal.value,
+gate.value,
+seat.value,
+classType.value
+
+].join("\t");
+
+
+navigator.clipboard.writeText(data);
+
+alert("Copied in office chart order");
 
 }
 
