@@ -511,30 +511,38 @@ minute:"2-digit"
 
 function copyRawTSV() {
 
-const data = [
-confirmation,
-airline.value,
-flight.value,
-passengerName.value,
-passport.value,
-from.value,
-to.value,
-date.value,
-boarding.value,
-liftoff.value,
-terminal.value,
-gate.value,
-seat.value,
-classType.value
-].join("\t");
+    const data = [
+        confirmation,
+        airline.value,
+        flight.value,
+        passengerName.value,
+        passport.value,
+        from.value,
+        to.value,
+        date.value,
+        boarding.value,
+        liftoff.value,
+        terminal.value,
+        gate.value,
+        seat.value,
+        classType.value
+    ].join("\t");
 
-navigator.clipboard.writeText(data)
-.then(() => alert("Copied!"))
-.catch(err => {
-    console.error(err);
-    alert("Copy failed.");
-});
+    const ta = document.createElement("textarea");
+    ta.value = data;
+    document.body.appendChild(ta);
 
+    ta.select();
+    ta.setSelectionRange(0, 99999);
+
+    try {
+        document.execCommand("copy");
+        alert("Copied!");
+    } catch (e) {
+        alert("Copy failed.");
+    }
+
+    document.body.removeChild(ta);
 }
 
 function createTicket(){
