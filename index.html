@@ -3,10 +3,10 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Airport Check-In Kiosk</title>
+<title>Check-In</title>
 
 <script src="https://cdn.jsdelivr.net/npm/bwip-js@4.5.1/dist/bwip-js-min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 
 *{
@@ -367,7 +367,7 @@ margin:0;
 <div class="panel">
 
 
-<h1>Airport Check-In</h1>
+<h1>Check-In</h1>
 
 
 <h3>Flight Information</h3>
@@ -397,11 +397,11 @@ margin:0;
 
 <select id="classType">
 
-<option>Economy Class</option>
+<option>Economy</option>
 
-<option>Premium Economy</option>
+<option>Economy Extra</option>
 
-<option>Business Class</option>
+<option>Business</option>
 
 <option>First Class</option>
 
@@ -421,9 +421,9 @@ margin:0;
 
 
 
-<label>Estimated Lift-Off Time</label>
+<label>Estimated Departure Time</label>
 
-<input id="liftoff" type="time">
+<input id="DepartureTime" type="time">
 
 
 
@@ -450,6 +450,9 @@ Print
 
 <button type="button" onclick="copyRawTSV()">Copy Data</button>
 
+<button type="button" onclick="shareTicket()">
+Share
+</button>
 
 <button class="clear" onclick="location.href=location.pathname">
 
@@ -505,6 +508,58 @@ minute:"2-digit"
 
 }
 
+async function shareTicket() {
+
+    const ticket = document.querySelector(".ticket");
+
+    const canvas = await html2canvas(ticket,{
+        scale:2,
+        backgroundColor:null
+    });
+
+    canvas.toBlob(async function(blob){
+
+        const file = new File(
+            [blob],
+            "BoardingPass.png",
+            {type:"image/png"}
+        );
+
+        if(
+            navigator.canShare &&
+            navigator.canShare({files:[file]})
+        ){
+
+            try{
+
+                await navigator.share({
+
+                    title:"Boarding Pass",
+
+                    files:[file]
+
+                });
+
+            }catch(e){}
+
+        }else{
+
+            const a=document.createElement("a");
+
+            a.href=URL.createObjectURL(blob);
+
+            a.download="BoardingPass.png";
+
+            a.click();
+
+            URL.revokeObjectURL(a.href);
+
+        }
+
+    });
+
+}
+
 function copyRawTSV() {
 
     const data = [
@@ -517,7 +572,7 @@ function copyRawTSV() {
         to.value,
         date.value,
         boarding.value,
-        liftoff.value,
+        DepartureTime.value,
         terminal.value,
         gate.value,
         seat.value,
@@ -552,7 +607,7 @@ let dateText=formatDate(date.value);
 
 let boardingText=formatTime(boarding.value);
 
-let liftText=formatTime(liftoff.value);
+let liftText=formatTime(DepartureTime.value);
 
 
 
@@ -572,7 +627,7 @@ TO:${to.value}
 PASSENGER:${passengerName.value}
 DATE:${date.value}
 BOARDING:${boarding.value}
-LIFTOFF:${liftoff.value}
+DepartureTime:${DepartureTime.value}
 TERMINAL:${terminal.value}
 GATE:${gate.value}
 SEAT:${seat.value}
@@ -677,7 +732,7 @@ ${boardingText}
 <div>
 
 <div class="label">
-LIFT-OFF
+DepartureTime
 </div>
 
 <div class="value">
